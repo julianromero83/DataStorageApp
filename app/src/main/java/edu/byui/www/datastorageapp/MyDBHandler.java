@@ -50,37 +50,24 @@ public class MyDBHandler extends SQLiteOpenHelper{
     }
 
     //Get last value
-    public String getValue() {
-        //if (databaseExists(DATABASE_NAME)) {
-            String dbString = "";
+    public String getValue() throws Exception {
+            String dbString = "0";
             SQLiteDatabase db = getWritableDatabase();
             String query = "SELECT * FROM " + TABLE_VALUES + " WHERE 1";
-
+        try {
             //Cursor point to a location in your results
             Cursor c = db.rawQuery(query, null);
-            //Move to the first row in your results
-            c.moveToFirst();
+            //Move to the last row in your results
+            c.moveToLast();
 
-            while (!c.isAfterLast()) {
-                if (c.getString(c.getColumnIndex("valuenumber")) != null) {
-                    dbString = c.getString(c.getColumnIndex("valuenumber"));
-                } else {
-                    dbString = "0";
-                }
+            if (c.getString(c.getColumnIndex("valuenumber")) != null) {
+                dbString = c.getString(c.getColumnIndex("valuenumber"));
             }
+        } catch (Exception e) { return dbString;}
+
             db.close();
             return dbString;
-        //} else { return "0";}
     }
 
-    private static boolean databaseExists(String dbName) {
-        SQLiteDatabase dbCheck = null;
-        try {
-            dbCheck = SQLiteDatabase.openDatabase(DATABASE_NAME, null, SQLiteDatabase.OPEN_READONLY);
-            dbCheck.close();
-        } catch (SQLiteException e) {
-            return false;
-        }
-        return true;
-    }
+
 }

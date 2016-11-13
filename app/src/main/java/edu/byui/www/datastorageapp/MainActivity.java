@@ -16,7 +16,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textNumber = (TextView) findViewById(R.id.textNumber);
         dbHandler = new MyDBHandler(this, null, null, 1);
-        textNumber.setText(dbHandler.getValue());
+        try {
+            textNumber.setText(dbHandler.getValue());
+        } catch (Exception e) { textNumber.setText("0");}
     }
 
     //Add a value to the database
